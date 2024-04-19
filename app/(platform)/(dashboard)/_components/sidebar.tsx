@@ -11,7 +11,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Accordion } from "@/components/ui/accordion";
 
 import {NavItem , Organization } from "./nav-item";
-import {Activity , CreditCard , Layout , Settings} from "lucide-react";
 
 
 interface SidebarProps{
@@ -45,7 +44,17 @@ function Sidebar({storageKey ="t-sidebar-state",}: SidebarProps) {
 
     if (!isLoadedOrg || !isLoadedOrgList || userMemberships.isLoading) {
         return (
-            <Skeleton />
+            <>
+                <div className="flex justify-between items-center mb-2">
+                    <Skeleton className="h-10 w-[60%]" />
+                    <Skeleton className="h-10 w-10" />
+                </div>
+                <div className="space-y-2">
+                    <NavItem.Skeleton />
+                    <NavItem.Skeleton />
+                    <NavItem.Skeleton />
+                </div>
+            </>
         )
     }
 
