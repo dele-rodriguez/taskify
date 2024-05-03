@@ -28,8 +28,6 @@ export const useAction = <TInput , TOutput> (
 
                 if(!result) {
                     return;
-                } else if (result.fieldErrors) {
-                    SetFieldErrors(result.fieldErrors);
                 } else if (result.error) {
                     SetError(result.error);
                     options.onError?.(result.error);
@@ -37,6 +35,7 @@ export const useAction = <TInput , TOutput> (
                     setData(result.data);
                     options.onSuccess?.(result.data);
                 }
+                SetFieldErrors(result.fieldErrors);
 
             } finally {
                 setIsLoading(false);
