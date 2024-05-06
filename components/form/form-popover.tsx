@@ -2,13 +2,16 @@
 
 import { Popover , PopoverClose, PopoverContent , PopoverTrigger } from "@/components/ui/popover";
 import { useAction } from "@/hooks/use-action";
-import { CreateBoard } from "@/actions/create-board/schema";
 import { FormInput } from "./form-input";
 import { FormSubmit } from "./form-submit";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
-import { useState } from "react";
+import { ElementRef, useRef, useState } from "react";
 import { createBoard } from "@/actions/create-board";
+import { toast } from "sonner";
+import { FormPicker } from "./form-picker";
+import { useRouter } from "next/navigation";
+
 
 
 interface FormPopOverProps {
@@ -19,21 +22,27 @@ interface FormPopOverProps {
 }
 
 export function FormPopOver({children , side= "bottom" , align ,sideOffset= 0}: FormPopOverProps) {
+    const router = useRouter();
+    const closeRef = useRef<ElementRef<"button">>(null);
     const [FormPopOverValue , setFormPopOverValue] = useState("");
     const {execute , fieldErrors} = useAction(createBoard , {
         onSuccess: (data) => {
             setFormPopOverValue("");
-            console.log({data});
+            toast.success("Board created");
+            closeRef.current?.click();
+            router.push(`/board/${data.id}`);
         }, 
         onError: (error) => {
             console.error({error});
+            toast.error(error);
         }
     });
 
     const onSubmit = (formData: FormData) => {
         const title = formData.get("title") as string;
+        const image = formData.get("image") as string;
 
-        execute({title});
+        execute({ title , image });
     }
 
     return (
@@ -50,7 +59,7 @@ export function FormPopOver({children , side= "bottom" , align ,sideOffset= 0}: 
                 <div className="text-sm font-medium text-center text-neutral-600 pb-4">
                     Create Board
                 </div>
-                <PopoverClose asChild>
+                <PopoverClose ref={closeRef} asChild>
                     <Button className="h-auto w-auto p-2 absolute top-2 right-2 text-neutral-600"
                         variant="ghost"
                     >
@@ -59,6 +68,10 @@ export function FormPopOver({children , side= "bottom" , align ,sideOffset= 0}: 
                 </PopoverClose>
                 <form action={onSubmit}>
                     <div className="space-y-4">
+                        <FormPicker 
+                            id="image"
+                            errors={fieldErrors}
+                        />
                         <FormInput
                             id="title"
                             label="Board title"
@@ -68,7 +81,7 @@ export function FormPopOver({children , side= "bottom" , align ,sideOffset= 0}: 
                             setValue={setFormPopOverValue}
                         />
                     </div>
-                    <FormSubmit className="w-full">
+                    <FormSubmit className="w-full mt-2">
                         create
                     </FormSubmit>
                 </form>
