@@ -13,7 +13,7 @@ datasource db {
   provider  = "postgresql"
   url  	    = env("DATABASE_URL")
   // uncomment next line if you use Prisma <5.10
-  // directUrl = env("DATABASE_URL_UNPOOLED")
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 model Board {
@@ -27,6 +27,43 @@ model Board {
   imageLinkHTML     String @db.Text
 
 
+  lists             List[]
+
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model List {
+  id                String @id @default(uuid())
+  title             String
+  order             Int
+
+  cards             Card[]
+  
+  boardId           String
+  board             Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([boardId])
+}
+
+
+model Card {
+  id                String @id @default(uuid())
+  title             String
+  order             Int
+  description       String? @db.Text
+
+
+
+  listId            String
+  list              List @relation(fields: [listId] , references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([listId])
 }

@@ -18,8 +18,8 @@ interface FormInputProps {
     className?: string;
     defaultValue?: string;
     onBlur?: () => void;
-    value: string;
-    setValue: (newValue: string) => void;
+    value?: string;
+    setValue?: (newValue: string) => void;
 }
 
 export const FormInput = forwardRef<HTMLInputElement,  FormInputProps>(({
