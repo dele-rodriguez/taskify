@@ -33,7 +33,7 @@ export function ListHeader({data , onAddCard}: ListHeaderProps) {
 
     const { execute , fieldErrors } = useAction(updateList , {
         onSuccess: (data) => {
-            toast.success(`Renamed to "${data.title}"`);
+            toast.success(`List renamed to "${data.title}"`);
             setTitle(data.title);
             disableEditting();
         },
