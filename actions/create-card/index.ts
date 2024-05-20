@@ -5,7 +5,8 @@ import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/lib/create-safe-action";
 import { CreateCard } from "./schema";
-import { list } from "postcss";
+import { createAuditLog } from "@/lib/create-audit-logs";
+import { ACTION, ENTITY_TYPE } from "@prisma/client";
 
  
 
@@ -52,7 +53,12 @@ const handler = async (data: InputType): Promise<ReturnType> => {
             },
         });
 
-
+        await createAuditLog({
+            entityId: card.id,
+            entityTitle: card.title,
+            entityType: ENTITY_TYPE.CARD,
+            action: ACTION.CREATE,
+        });
 
     } catch (e) {
         return {

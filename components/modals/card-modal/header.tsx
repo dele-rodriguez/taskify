@@ -28,6 +28,10 @@ export function Header({data }: HeaderProps) {
             queryClient.invalidateQueries({
                 queryKey: ["card", data.id]
             });
+
+            queryClient.invalidateQueries({
+                queryKey: ["card-logs", data.id]
+            });
             toast.success(`Card renamed to "${data.title}".`);
             setTitle(data.title);
         },
@@ -61,6 +65,7 @@ export function Header({data }: HeaderProps) {
                         id="title"
                         defaultValue={title}
                         onBlur={onBlur}
+                        errors={fieldErrors}
                         className="font-semibold text-lg px-1 text-neutral-700 bg-transparent border-transparent relative -left-1.5 w-[95%] focus-visible:bg-white focus-visible:border-input mb-0.5 truncate"
                     />
                 </form>
