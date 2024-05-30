@@ -11,6 +11,7 @@ import { createBoard } from "@/actions/create-board";
 import { toast } from "sonner";
 import { FormPicker } from "./form-picker";
 import { useRouter } from "next/navigation";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 
 
@@ -22,6 +23,7 @@ interface FormPopOverProps {
 }
 
 export function FormPopOver({children , side= "bottom" , align ,sideOffset= 0}: FormPopOverProps) {
+    const promodal = useProModal();
     const router = useRouter();
     const closeRef = useRef<ElementRef<"button">>(null);
     const [FormPopOverValue , setFormPopOverValue] = useState("");
@@ -35,6 +37,7 @@ export function FormPopOver({children , side= "bottom" , align ,sideOffset= 0}: 
         onError: (error) => {
             console.error({error});
             toast.error(error);
+            promodal.onOpen();
         }
     });
 

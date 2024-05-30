@@ -8,6 +8,8 @@ import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getAvailableCount } from "@/lib/org-limit";
+import { MAX_FREE_BOARDS } from "@/constants/boards";
 
 export async function BoardList() {
     const {userId , orgId } = auth();
@@ -24,6 +26,8 @@ export async function BoardList() {
             createdAt: "desc"
         }
     })
+
+    const availableCount = await getAvailableCount();
 
 
     return (
@@ -53,7 +57,7 @@ export async function BoardList() {
                     >
                         <p className="text-sm">Create new board</p>
                         <span className="text-xs">
-                            5 remaining
+                            {`${MAX_FREE_BOARDS - availableCount} remaining`}
                         </span>
                         <Hint
                             sideOffset={30}
