@@ -129,8 +129,8 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ message: 'Webhook received' }, { status: 200 });
 }
 
-// Config to disable body parsing by Next.js
-export const config = {
+// New configuration for disabling body parsing by Next.js
+export const routeSegmentConfig = {
   api: {
     bodyParser: false,
   },
