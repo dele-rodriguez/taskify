@@ -130,9 +130,9 @@ export async function POST(req: NextRequest) {
 }
 
 // New configuration for disabling body parsing by Next.js
-export const routeSegmentConfig = {
-  api: {
-    bodyParser: false,
-  }, 
-};
+// export const routeSegmentConfig = {
+//   api: {
+//     bodyParser: false,
+//   }, 
+// };
 // I don't Know why the push did not work
