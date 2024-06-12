@@ -1,5 +1,5 @@
 import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { NextResponse , NextRequest} from "next/server";
 
 export default authMiddleware({
   publicRoutes: ["/", "/api/paystack/webhook"], // Add your public routes here
@@ -24,10 +24,19 @@ export default authMiddleware({
   },
 });
 
+export async function middleware(req: NextRequest) {
+  if (req.nextUrl.pathname === '/api/paystack/webhook') {
+    req.headers.set('x-disable-body-parser', 'true');
+  }
+
+  return NextResponse.next();
+}
+
 export const config = {
   matcher: [
     "/((?!_next/static|_next/image|favicon.ico|public).*)", // Exclude static files and public routes
     "/",
     "/(api|trpc)(.*)",
+    '/api/paystack/webhook',
   ],
 };
