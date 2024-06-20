@@ -10,6 +10,7 @@ import { useState } from "react";
 
 export function ProModal() {
     const [isLoading , setIsLoading] = useState<boolean>(false);
+    const [subscribers , setSubscribers] = useState();
     const proModal = useProModal();
 
     const handleSuscribe = async() => {
@@ -39,6 +40,32 @@ export function ProModal() {
         }
     }
 
+    const fetchSubscribers = async () => {
+        setIsLoading(true);
+        try {
+          const response = await fetch("/api/paystack/subscribers", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+    
+          const data = await response.json();
+    
+          if (response.ok) {
+            setSubscribers(data);
+            toast.success("Fetched subscribers successfully");
+          } else {
+            console.error(data);
+            toast.error(data.error);
+          }
+        } catch (e) {
+          console.error("Error fetching subscribers:", e);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+    
 
     return (
         <Dialog

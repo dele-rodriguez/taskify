@@ -2,7 +2,7 @@ import {auth} from "@clerk/nextjs";
 
 import {db} from "@/lib/db";
 
-const DAY_IN_MS = 84_400_000;
+const DAY_IN_MS = 86_400_000;
 
 export const checkSubcription = async () => {
     const {orgId} = auth();
@@ -16,10 +16,11 @@ export const checkSubcription = async () => {
             orgId ,
         },
         select: {
-            stripeCurrentPeriodEnd: true,
-            stripeCustomerId: true,
-            stripePriceId: true,
-            stripeSubscroptionId: true,
+            paystackCurrentPeriodEnd: true,
+            paystackCustomerId: true,
+            paystackPlanId: true,
+            paystackSubscriptionId: true,
+            paystackCustomerCode: true,
         },
     });
 
@@ -27,7 +28,7 @@ export const checkSubcription = async () => {
         return false;
     }
 
-    const isValid = orgsubcription.stripePriceId && orgsubcription.stripeCurrentPeriodEnd?.getTime()! + DAY_IN_MS > Date.now()
+    const isValid = orgsubcription.paystackCustomerId && orgsubcription.paystackCurrentPeriodEnd?.getTime()! + DAY_IN_MS > Date.now()
 
     return !!isValid;
 };

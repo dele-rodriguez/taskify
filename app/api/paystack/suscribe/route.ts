@@ -15,7 +15,7 @@ export async function POST(req: Request) {
 
     if(req.method !== "POST") {
         return new NextResponse("Only Post requests are allowed" , {status: 405});
-    }
+    } 
 
     try {
         const response = await axios.post(
@@ -24,6 +24,7 @@ export async function POST(req: Request) {
                 email: email,
                 plan:   process.env.PAYSTACK_PLAN_CODE,
                 amount: "200000",
+                metadata: {organizationId: orgId},
             },
             {
                 headers: {

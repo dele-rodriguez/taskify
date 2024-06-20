@@ -106,11 +106,16 @@ model OrgLimit {
 }
 
 model orgSubscription {
-  id                        String @id @default(uuid())
-  orgId                     String @unique
+  id                        String   @id @default(uuid())
+  orgId                     String?   @unique
 
-  paystackCustomerId        String? @unique @map(name: "stripe_customer_id")
-  paystackSubscriptionId    String? @unique @map(name: "stripe_subscription_id")
-  paystackPriceId           String? @map(name: "stripe_price_id")
-  paystackCurrentPeriodEnd  DateTime? @map(name: "stripe_current_period_end")
+  paystackCustomerId        Int?  @unique @map(name: "paystack_customer_id")
+  paystackCustomerCode      String? @unique
+  paystackSubscriptionId    String?  @unique @map(name: "paystack_subscription_id")
+  paystackPlanId            Int?  @map(name: "paystack_plan_id")
+  invoiceLimit              Int?
+  paystackCurrentPeriodEnd  DateTime? @map(name: "paystack_current_period_end")
+
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
 }
