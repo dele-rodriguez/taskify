@@ -129,10 +129,9 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ message: 'Webhook received' }, { status: 200 });
 }
 
-// New configuration for disabling body parsing by Next.js
-// export const routeSegmentConfig = {
-//   api: {
-//     bodyParser: false,
-//   }, 
-// };
-// I don't Know why the push did not work
+// Config to disable body parsing by Next.js
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
